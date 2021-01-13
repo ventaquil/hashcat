@@ -902,7 +902,9 @@ int hashcat_init (hashcat_ctx_t *hashcat_ctx, void (*event) (const u32, struct h
   hashcat_ctx->backend_ctx        = (backend_ctx_t *)         hcmalloc (sizeof (backend_ctx_t));
   hashcat_ctx->outcheck_ctx       = (outcheck_ctx_t *)        hcmalloc (sizeof (outcheck_ctx_t));
   hashcat_ctx->outfile_ctx        = (outfile_ctx_t *)         hcmalloc (sizeof (outfile_ctx_t));
+  #ifdef WITH_PIDFILE
   hashcat_ctx->pidfile_ctx        = (pidfile_ctx_t *)         hcmalloc (sizeof (pidfile_ctx_t));
+  #endif
   hashcat_ctx->potfile_ctx        = (potfile_ctx_t *)         hcmalloc (sizeof (potfile_ctx_t));
   hashcat_ctx->restore_ctx        = (restore_ctx_t *)         hcmalloc (sizeof (restore_ctx_t));
   hashcat_ctx->status_ctx         = (status_ctx_t *)          hcmalloc (sizeof (status_ctx_t));
@@ -936,7 +938,9 @@ void hashcat_destroy (hashcat_ctx_t *hashcat_ctx)
   hcfree (hashcat_ctx->backend_ctx);
   hcfree (hashcat_ctx->outcheck_ctx);
   hcfree (hashcat_ctx->outfile_ctx);
+  #ifdef WITH_PIDFILE
   hcfree (hashcat_ctx->pidfile_ctx);
+  #endif
   hcfree (hashcat_ctx->potfile_ctx);
   hcfree (hashcat_ctx->restore_ctx);
   hcfree (hashcat_ctx->status_ctx);
@@ -981,7 +985,9 @@ int hashcat_session_init (hashcat_ctx_t *hashcat_ctx, const char *install_folder
    * pidfile
    */
 
+  #ifdef WITH_PIDFILE
   if (pidfile_ctx_init (hashcat_ctx) == -1) return -1;
+  #endif
 
   /**
    * restore
@@ -1301,7 +1307,9 @@ int hashcat_session_destroy (hashcat_ctx_t *hashcat_ctx)
   backend_ctx_destroy         (hashcat_ctx);
   outcheck_ctx_destroy        (hashcat_ctx);
   outfile_destroy             (hashcat_ctx);
+  #ifdef WITH_PIDFILE
   pidfile_ctx_destroy         (hashcat_ctx);
+  #endif
   potfile_destroy             (hashcat_ctx);
   restore_ctx_destroy         (hashcat_ctx);
   tuning_db_destroy           (hashcat_ctx);

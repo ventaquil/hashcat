@@ -2548,7 +2548,9 @@ typedef struct hashcat_ctx
   backend_ctx_t         *backend_ctx;
   outcheck_ctx_t        *outcheck_ctx;
   outfile_ctx_t         *outfile_ctx;
+  #ifdef WITH_PIDFILE
   pidfile_ctx_t         *pidfile_ctx;
+  #endif
   potfile_ctx_t         *potfile_ctx;
   restore_ctx_t         *restore_ctx;
   status_ctx_t          *status_ctx;
