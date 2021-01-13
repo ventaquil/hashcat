@@ -2155,7 +2155,9 @@ int user_options_check_files (hashcat_ctx_t *hashcat_ctx)
   logfile_ctx_t        *logfile_ctx        = hashcat_ctx->logfile_ctx;
   outcheck_ctx_t       *outcheck_ctx       = hashcat_ctx->outcheck_ctx;
   outfile_ctx_t        *outfile_ctx        = hashcat_ctx->outfile_ctx;
+  #ifdef WITH_PIDFILE
   pidfile_ctx_t        *pidfile_ctx        = hashcat_ctx->pidfile_ctx;
+  #endif
   potfile_ctx_t        *potfile_ctx        = hashcat_ctx->potfile_ctx;
   user_options_extra_t *user_options_extra = hashcat_ctx->user_options_extra;
   user_options_t       *user_options       = hashcat_ctx->user_options;
@@ -2722,6 +2724,7 @@ int user_options_check_files (hashcat_ctx_t *hashcat_ctx)
 
   // pidfile
 
+  #ifdef WITH_PIDFILE
   if (hc_path_exist (pidfile_ctx->filename) == true)
   {
     if (hc_path_is_directory (pidfile_ctx->filename) == true)
@@ -2747,6 +2750,7 @@ int user_options_check_files (hashcat_ctx_t *hashcat_ctx)
       return -1;
     }
   }
+  #endif
 
   // potfile
 

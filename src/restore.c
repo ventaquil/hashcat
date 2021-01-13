@@ -178,9 +178,11 @@ static int read_restore (hashcat_ctx_t *hashcat_ctx)
      * updated pidfile
      */
 
+    #ifdef WITH_PIDFILE
     pidfile_ctx_destroy (hashcat_ctx);
 
     if (pidfile_ctx_init (hashcat_ctx) == -1) return -1;
+    #endif
   }
 
   return 0;
