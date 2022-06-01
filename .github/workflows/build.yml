@@ -1,0 +1,34 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - v*
+    paths:
+      - 'OpenCL/**.h'
+      - 'OpenCL/**.cl'
+      - 'include/**.h'
+      - 'src/**.c'
+      - '**/Makefile'
+  pull_request:
+    branches:
+      - master
+    types:
+      - ready_for_review
+      - review_requested
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build
+        run: make
