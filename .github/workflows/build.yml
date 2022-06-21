@@ -27,7 +27,10 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
+        shared: [0, 1]
     runs-on: ${{ matrix.os }}
+    env:
+      SHARED: ${{ matrix.shared }}
     steps:
       - uses: actions/checkout@v3
       - name: Build
