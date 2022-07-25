@@ -67,6 +67,7 @@ INSTALL                 := install
 RM                      := rm
 SED                     := sed
 SED_IN_PLACE            := -i
+7Z                      := 7z
 
 ifeq ($(UNAME),Darwin)
 CC                      := clang
@@ -154,6 +155,7 @@ endif
 
 HASHCAT_FRONTEND        := hashcat
 HASHCAT_LIBRARY         := libhashcat.so.$(VERSION_PURE)
+HASHCAT_PACKAGE         := hashcat.7z
 
 ifeq ($(UNAME),Darwin)
 HASHCAT_LIBRARY         := libhashcat.$(VERSION_PURE).dylib
@@ -459,6 +461,7 @@ default: $(HASHCAT_FRONTEND) modules
 clean:
 	$(RM) -f $(HASHCAT_FRONTEND)
 	$(RM) -f $(HASHCAT_LIBRARY)
+	$(RM) -f $(HASHCAT_PACKAGE)
 	$(RM) -rf modules/*.dSYM
 	$(RM) -f modules/*.dll
 	$(RM) -f modules/*.so
@@ -630,6 +633,17 @@ uninstall:
 	$(RM) -rf $(DESTDIR)$(LIBRARY_DEV_FOLDER)
 	$(RM) -rf $(DESTDIR)$(SHARED_FOLDER)
 	$(RM) -rf $(DESTDIR)$(DOCUMENT_FOLDER)
+
+.PHONY: package
+package: $(HASHCAT_PACKAGE)
+
+ifeq ($(SHARED),1)
+$(HASHCAT_PACKAGE): $(HASHCAT_FRONTEND) $(HASHCAT_LIBRARY) OpenCL/*.h OpenCL/*.cl modules/*
+	$(7Z) a -t7z -m0=lzma2:d31 -mx=9 -mmt=8 -ms=on $(HASHCAT_PACKAGE) $(HASHCAT_FRONTEND) $(HASHCAT_LIBRARY) example* hashcat.hctune hashcat.hcstat2 charsets/ docs/ extra/ layouts/ masks/ modules/ OpenCL/ rules/ tools/*hashcat.p[ly]
+else
+$(HASHCAT_PACKAGE): $(HASHCAT_FRONTEND)                    OpenCL/*.h OpenCL/*.cl modules/*
+	$(7Z) a -t7z -m0=lzma2:d31 -mx=9 -mmt=8 -ms=on $(HASHCAT_PACKAGE) $(HASHCAT_FRONTEND)                    example* hashcat.hctune hashcat.hcstat2 charsets/ docs/ extra/ layouts/ masks/ modules/ OpenCL/ rules/ tools/*hashcat.p[ly]
+endif
 
 ##
 ## native compiled hashcat library and frontend
