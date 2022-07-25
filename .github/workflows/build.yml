@@ -1,19 +1,5 @@
 name: Build
 
-env:
-  include_paths: |
-    charsets/
-    docs/
-    extra/
-    layouts/
-    masks/
-    modules/
-    OpenCL/
-    rules/
-    example*
-    hashcat*
-    libhashcat*
-
 on:
   push:
     branches:
@@ -54,11 +40,15 @@ jobs:
         env:
           SHARED: ${{ matrix.shared }}
         run: make
+      - name: Make package
+        env:
+          SHARED: ${{ matrix.shared }}
+        run: make package
       - name: Generate artifacts
         uses: actions/upload-artifact@v3
         with:
           name: hashcat-linux-${{ matrix.shared == 0 && 'static' || 'shared' }}
-          path: ${{ env.include_paths }}
+          path: hashcat.7z
 
   build-macos:
     strategy:
@@ -73,11 +63,15 @@ jobs:
         env:
           SHARED: ${{ matrix.shared }}
         run: make
+      - name: Make package
+        env:
+          SHARED: ${{ matrix.shared }}
+        run: make package
       - name: Generate artifacts
         uses: actions/upload-artifact@v3
         with:
           name: hashcat-macos-${{ matrix.shared == 0 && 'static' || 'shared' }}
-          path: ${{ env.include_paths }}
+          path: hashcat.7z
 
   build-windows:
     strategy:
@@ -103,8 +97,13 @@ jobs:
         env:
           SHARED: ${{ matrix.shared }}
         run: make
+      - name: Make package
+        shell: msys2 {0}
+        env:
+          SHARED: ${{ matrix.shared }}
+        run: make package
       - name: Generate artifacts
         uses: actions/upload-artifact@v3
         with:
           name: hashcat-windows-${{ matrix.shared == 0 && 'static' || 'shared' }}
-          path: ${{ env.include_paths }}
+          path: hashcat.7z
