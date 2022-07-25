@@ -505,9 +505,9 @@ endif
 
 .PHONY: install
 ifeq ($(SHARED),1)
-install: install_docs install_shared install_library install_library_dev install_kernels install_modules install_hashcat
+install: install_docs install_shared install_library install_library_dev install_kernels install_modules install_hashcat install_tools
 else
-install: install_docs install_shared                                     install_kernels install_modules install_hashcat
+install: install_docs install_shared                                     install_kernels install_modules install_hashcat install_tools
 endif
 
 # we need this extra target to make sure that for parallel builds (i.e. 2+ Makefile targets could possible run at the same time)
@@ -591,9 +591,41 @@ install_hashcat: $(HASHCAT_FRONTEND)
 	$(INSTALL) -m 755 -d                                                    $(DESTDIR)$(INSTALL_FOLDER)
 	$(INSTALL) -m 755 $(HASHCAT_FRONTEND)                                   $(DESTDIR)$(INSTALL_FOLDER)/
 
+.PHONY: install_tools
+install_tools:
+	$(INSTALL) -m 755 -d                                                    $(DESTDIR)$(INSTALL_FOLDER)
+	$(INSTALL) -m 755 tools/aescrypt2hashcat.pl                             $(DESTDIR)$(INSTALL_FOLDER)/aescrypt2hashcat
+	$(INSTALL) -m 755 tools/bitwarden2hashcat.py                            $(DESTDIR)$(INSTALL_FOLDER)/bitwarden2hashcat
+	$(INSTALL) -m 755 tools/cryptoloop2hashcat.py                           $(DESTDIR)$(INSTALL_FOLDER)/cryptoloop2hashcat
+	$(INSTALL) -m 755 tools/exodus2hashcat.py                               $(DESTDIR)$(INSTALL_FOLDER)/exodus2hashcat
+	$(INSTALL) -m 755 tools/luks2hashcat.py                                 $(DESTDIR)$(INSTALL_FOLDER)/luks2hashcat
+	$(INSTALL) -m 755 tools/metamask2hashcat.py                             $(DESTDIR)$(INSTALL_FOLDER)/metamask2hashcat
+	$(INSTALL) -m 755 tools/mozilla2hashcat.py                              $(DESTDIR)$(INSTALL_FOLDER)/mozilla2hashcat
+	$(INSTALL) -m 755 tools/radmin3_to_hashcat.pl                           $(DESTDIR)$(INSTALL_FOLDER)/radmin3_to_hashcat
+	$(INSTALL) -m 755 tools/securenotes2hashcat.pl                          $(DESTDIR)$(INSTALL_FOLDER)/securenotes2hashcat
+	$(INSTALL) -m 755 tools/sqlcipher2hashcat.pl                            $(DESTDIR)$(INSTALL_FOLDER)/sqlcipher2hashcat
+	$(INSTALL) -m 755 tools/truecrypt2hashcat.py                            $(DESTDIR)$(INSTALL_FOLDER)/truecrypt2hashcat
+	$(INSTALL) -m 755 tools/veracrypt2hashcat.py                            $(DESTDIR)$(INSTALL_FOLDER)/veracrypt2hashcat
+	$(INSTALL) -m 755 tools/virtualbox2hashcat.py                           $(DESTDIR)$(INSTALL_FOLDER)/virtualbox2hashcat
+	$(INSTALL) -m 755 tools/vmwarevmx2hashcat.py                            $(DESTDIR)$(INSTALL_FOLDER)/vmwarevmx2hashcat
+
 .PHONY: uninstall
 uninstall:
 	$(RM) -f  $(DESTDIR)$(INSTALL_FOLDER)/$(HASHCAT_FRONTEND)
+	$(RM) -f  $(DESTDIR)$(INSTALL_FOLDER)/aescrypt2hashcat
+	$(RM) -f  $(DESTDIR)$(INSTALL_FOLDER)/bitwarden2hashcat
+	$(RM) -f  $(DESTDIR)$(INSTALL_FOLDER)/cryptoloop2hashcat
+	$(RM) -f  $(DESTDIR)$(INSTALL_FOLDER)/exodus2hashcat
+	$(RM) -f  $(DESTDIR)$(INSTALL_FOLDER)/luks2hashcat
+	$(RM) -f  $(DESTDIR)$(INSTALL_FOLDER)/metamask2hashcat
+	$(RM) -f  $(DESTDIR)$(INSTALL_FOLDER)/mozilla2hashcat
+	$(RM) -f  $(DESTDIR)$(INSTALL_FOLDER)/radmin3_to_hashcat
+	$(RM) -f  $(DESTDIR)$(INSTALL_FOLDER)/securenotes2hashcat
+	$(RM) -f  $(DESTDIR)$(INSTALL_FOLDER)/sqlcipher2hashcat
+	$(RM) -f  $(DESTDIR)$(INSTALL_FOLDER)/truecrypt2hashcat
+	$(RM) -f  $(DESTDIR)$(INSTALL_FOLDER)/veracrypt2hashcat
+	$(RM) -f  $(DESTDIR)$(INSTALL_FOLDER)/virtualbox2hashcat
+	$(RM) -f  $(DESTDIR)$(INSTALL_FOLDER)/vmwarevmx2hashcat
 	$(RM) -f  $(DESTDIR)$(LIBRARY_FOLDER)/$(HASHCAT_LIBRARY)
 	$(RM) -rf $(DESTDIR)$(LIBRARY_DEV_FOLDER)
 	$(RM) -rf $(DESTDIR)$(SHARED_FOLDER)
