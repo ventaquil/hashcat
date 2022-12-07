@@ -28,7 +28,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Install PoCL
-        run: sudo apt-get update && sudo apt-get install --no-install-recommends --yes opencl-headers pocl-opencl-icd
+        run: sudo apt-get update && sudo apt install -y build-essential ocl-icd-libopencl1 cmake git pkg-config libclang-dev clang llvm make ninja-build ocl-icd-libopencl1 ocl-icd-dev ocl-icd-opencl-dev libhwloc-dev zlib1g zlib1g-dev clinfo dialog apt-utils && sudo apt-get install --no-install-recommends --yes opencl-headers pocl-opencl-icd
       - name: Install
         env:
           SHARED: ${{ matrix.shared }}
